@@ -39,7 +39,7 @@ app.MapGet("/api/books", async (IRepository<Book> repository, ILogger logger) =>
         try
         {
             var books = await repository.GetAll();
-            return Results.Ok(books);
+            return books.Any() ? Results.Ok(books) : Results.NotFound();
         }
         catch (Exception e)
         {
@@ -48,6 +48,24 @@ app.MapGet("/api/books", async (IRepository<Book> repository, ILogger logger) =>
         }})
     .Produces(200)
     .Produces<List<Book>>()
-    .Produces(500);
+    .Produces(500)
+    .Produces(404);
+
+app.MapGet("/api/books/{id:int}", async (int id, IRepository<Book> repository, ILogger logger) =>
+    {
+        try
+        {
+            var book = await repository.Get(id);
+            return book != null ? Results.Ok(book) : Results.NotFound();
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error when getting book");
+            return Results.StatusCode(500);
+        }})
+    .Produces(200)
+    .Produces<Book>()
+    .Produces(500)
+    .Produces(404);
 
 app.Run();
