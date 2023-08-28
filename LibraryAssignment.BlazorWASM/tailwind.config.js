@@ -2,7 +2,14 @@
 module.exports = {
   content: ["./**/*.{razor, cshtml}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: theme => ({
+        'custom-bg': "url('/images/library-bg.jpg')",
+    }),
+      fontFamily: {
+        'english': ['Uncial Antiqua', 'cursive']
+      }
   },
-  plugins: [],
+  }, 
+  plugins: []
 }

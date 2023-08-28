@@ -1,11 +1,13 @@
-﻿<div>
-    <h1>Navmenu</h1>
-    <p>This is the navmenu.</p>
-    <ul>
-        <li><NavLink href="" Match="NavLinkMatch.All">Home</NavLink></li>
-        <li><NavLink href="counter">Counter</NavLink></li>
-        <li><NavLink href="fetchdata">Fetch data</NavLink></li>
-    </ul>
+﻿<div class="flex flex-row font-english text-black justify-between bg-white py-5 px-5">
+    <div>
+        <h1 class="text-xl md:text-4xl">Ye olde library</h1>
+    </div>
+    <div>
+        <ul class="flex flex-col md:flex-row text-xl md:text-4xl">
+            <li class="mr-3 hover:underline"><NavLink href="" Match="NavLinkMatch.All">Home</NavLink></li>
+            <li class="mr-3 hover:underline"><NavLink href="books">Books</NavLink></li>
+        </ul>
+    </div>
 </div>
 
 @code {

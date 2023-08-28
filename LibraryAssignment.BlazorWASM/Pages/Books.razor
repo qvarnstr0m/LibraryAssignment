@@ -1,0 +1,47 @@
+@page "/books"
+@using LibraryAssignment.BlazorWASM.Interfaces
+@using LibraryAssignment.Data.Models
+@inject IBookService BookService
+
+<PageTitle>Books - Ye olde library</PageTitle>
+
+<h3>Books</h3>
+
+<p>Here are some books:</p>
+@if (BooksList != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Genre</th>
+                <th>Year Published</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in BooksList)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+
+@code {
+    public IEnumerable<Book>? BooksList { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        BooksList = await BookService.GetBooks();
+    }
+}
