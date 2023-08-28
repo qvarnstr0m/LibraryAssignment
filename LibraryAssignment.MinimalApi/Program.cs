@@ -1,3 +1,4 @@
+using AutoMapper;
 using FluentValidation;
 using LibraryAssignment.Data.DbContext;
 using LibraryAssignment.Data.DTOs;
@@ -76,7 +77,7 @@ app.MapGet("/api/books/{id:int}", async (int id, IRepository<Book> repository, I
     .Produces(404);
 
 app.MapPost("api/books", async ([FromBody] CreateBookDto bookDto, IRepository<Book> repository, 
-        ILogger logger, IValidator<CreateBookDto> validator) =>
+        ILogger logger, IValidator<CreateBookDto> validator, IMapper mapper) =>
     {
         try
         {
@@ -86,16 +87,8 @@ app.MapPost("api/books", async ([FromBody] CreateBookDto bookDto, IRepository<Bo
              {
                  return Results.BadRequest(validationResult.Errors);
              }
-            
-            var book = new Book
-            {
-                Title = bookDto.Title,
-                Author = bookDto.Author,
-                Description = bookDto.Description,
-                IsAvailable = bookDto.IsAvailable
-            };
 
-            var createdBook = await repository.Create(book);
+            var createdBook = await repository.Create(mapper.Map<Book>(bookDto));
             
             return createdBook != null ? Results.Created($"/api/books/{createdBook.Id}", createdBook) : Results.StatusCode(500);
         }
@@ -106,6 +99,7 @@ app.MapPost("api/books", async ([FromBody] CreateBookDto bookDto, IRepository<Bo
         }})
     .Produces(201)
     .Produces<Book>()
-    .Produces(500);
+    .Produces(500)
+    .Produces(400);
 
 app.Run();
