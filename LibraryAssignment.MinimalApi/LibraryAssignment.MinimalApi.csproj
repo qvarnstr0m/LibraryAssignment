@@ -28,4 +28,8 @@
       <ProjectReference Include="..\LibraryAssignment.Data\LibraryAssignment.Data.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Validations\" />
+    </ItemGroup>
+
 </Project>
