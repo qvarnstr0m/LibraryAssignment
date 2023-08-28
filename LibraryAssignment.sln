@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAssignment.Data", "L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAssignment.Tests", "LibraryAssignment.Tests\LibraryAssignment.Tests.csproj", "{4A2C5D65-D0F9-4A48-94CE-876FFE70C22A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAssignment.BlazorWASM", "LibraryAssignment.BlazorWASM\LibraryAssignment.BlazorWASM.csproj", "{435D85F9-0650-4062-B417-C79E55C8D8D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{4A2C5D65-D0F9-4A48-94CE-876FFE70C22A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A2C5D65-D0F9-4A48-94CE-876FFE70C22A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A2C5D65-D0F9-4A48-94CE-876FFE70C22A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{435D85F9-0650-4062-B417-C79E55C8D8D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{435D85F9-0650-4062-B417-C79E55C8D8D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{435D85F9-0650-4062-B417-C79E55C8D8D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{435D85F9-0650-4062-B417-C79E55C8D8D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

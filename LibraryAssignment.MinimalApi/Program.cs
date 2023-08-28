@@ -20,7 +20,8 @@ var configuration = new ConfigurationBuilder()
 builder.Services.AddScoped<IRepository<Book>, Repository<Book>>();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseMySql(configuration.GetConnectionString("LocalConnection"), new MySqlServerVersion(new Version(8, 0, 32)));
+    options.UseMySql(configuration.GetConnectionString("LocalConnection"), 
+        new MySqlServerVersion(new Version(8, 0, 32)));
 });
 builder.Services.AddValidatorsFromAssemblyContaining<CreateBookDto>();
 builder.Services.AddTransient<IValidator<CreateBookDto>, CreateBookValidations>();
@@ -91,7 +92,9 @@ app.MapPost("api/books", async ([FromBody] CreateBookDto bookDto, IRepository<Bo
 
             var createdBook = await repository.Create(mapper.Map<Book>(bookDto));
             
-            return createdBook != null ? Results.Created($"/api/books/{createdBook.Id}", createdBook) : Results.StatusCode(500);
+            return createdBook != null ? 
+                Results.Created($"/api/books/{createdBook.Id}", createdBook) : 
+                Results.StatusCode(500);
         }
         catch (Exception e)
         {
@@ -103,8 +106,8 @@ app.MapPost("api/books", async ([FromBody] CreateBookDto bookDto, IRepository<Bo
     .Produces(500)
     .Produces(400);
 
-app.MapPut("api/books/{id:int}", async (int id, [FromBody] UpdateBookDto bookDto, IRepository<Book> repository, 
-        ILogger logger, IValidator<UpdateBookDto> validator, IMapper mapper) =>
+app.MapPut("api/books/{id:int}", async (int id, [FromBody] UpdateBookDto bookDto, 
+        IRepository<Book> repository, ILogger logger, IValidator<UpdateBookDto> validator, IMapper mapper) =>
     {
         try
         {
