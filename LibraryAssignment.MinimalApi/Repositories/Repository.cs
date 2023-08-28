@@ -14,7 +14,14 @@ public class Repository<T> : IRepository<T> where T : class
         _dbContext = dbContext;
         _dbSet = _dbContext.Set<T>();
     }
-    
+
+    public async Task<T?> Create(T entity)
+    {
+        _dbContext.Add(entity);
+        await _dbContext.SaveChangesAsync();
+        return entity;
+    }
+
     public async Task<T?> Get(int id)
     {
         return await _dbSet.FindAsync(id);
