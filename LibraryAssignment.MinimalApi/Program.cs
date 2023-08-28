@@ -24,6 +24,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddValidatorsFromAssemblyContaining<CreateBookDto>();
 builder.Services.AddTransient<IValidator<CreateBookDto>, CreateBookValidations>();
+builder.Services.AddTransient<IValidator<UpdateBookDto>, UpdateBookValidations>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ILogger, Logger<Program>>();
 
@@ -101,5 +102,69 @@ app.MapPost("api/books", async ([FromBody] CreateBookDto bookDto, IRepository<Bo
     .Produces<Book>()
     .Produces(500)
     .Produces(400);
+
+app.MapPut("api/books/{id:int}", async (int id, [FromBody] UpdateBookDto bookDto, IRepository<Book> repository, 
+        ILogger logger, IValidator<UpdateBookDto> validator, IMapper mapper) =>
+    {
+        try
+        {
+            if (id != bookDto.Id)
+            {
+                return Results.BadRequest("Book id does not match");
+            }
+            
+            var validationResult = await validator.ValidateAsync(bookDto);
+            
+            if (!validationResult.IsValid)
+            {
+                return Results.BadRequest(validationResult.Errors);
+            }
+
+            var existingBook = await repository.Get(id);
+            
+            if (existingBook == null)
+            {
+                return Results.NotFound();
+            }
+
+            mapper.Map(bookDto, existingBook);
+            
+            var updatedBook = await repository.Update(bookDto.Id);
+            
+            return updatedBook != null ? Results.StatusCode(204) : Results.StatusCode(500);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error when updating book");
+            return Results.StatusCode(500);
+        }})
+    .Produces(204)
+    .Produces(500)
+    .Produces(400)
+    .Produces(404);
+
+app.MapDelete("api/books/{id:int}", async (int id, IRepository<Book> repository, ILogger logger) =>
+    {
+        try
+        {
+            var existingBook = await repository.Get(id);
+            
+            if (existingBook == null)
+            {
+                return Results.NotFound();
+            }
+
+            var deletedBook = await repository.Delete(id);
+            
+            return deletedBook != null ? Results.StatusCode(204) : Results.StatusCode(500);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error when deleting book");
+            return Results.StatusCode(500);
+        }})
+    .Produces(204)
+    .Produces(500)
+    .Produces(404);
 
 app.Run();

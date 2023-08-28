@@ -9,5 +9,6 @@ public class MappingConfig : Profile
     public MappingConfig()
     {
         CreateMap<CreateBookDto, Book>().ReverseMap();
+        CreateMap<UpdateBookDto, Book>().ReverseMap();
     }
 }
