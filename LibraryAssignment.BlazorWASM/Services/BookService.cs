@@ -16,7 +16,7 @@ public class BookService : IBookService
         _httpClient = httpClient;
     }
     
-    public async Task<IEnumerable<Book>> GetBooks()
+    public async Task<IEnumerable<Book>?> GetBooks()
     {
         try
         {
@@ -28,7 +28,7 @@ public class BookService : IBookService
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
+            return null;
         }
     }
 

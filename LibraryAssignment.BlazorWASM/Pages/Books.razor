@@ -1,11 +1,12 @@
 @page "/books"
-@using LibraryAssignment.BlazorWASM.Interfaces
 @using LibraryAssignment.Data.Models
+@using LibraryAssignment.BlazorWASM.Interfaces
 @inject IBookService BookService
+@inject SpinnerService SpinnerService
 
-<PageTitle>books - library.</PageTitle>
+<PageTitle>all books - library.</PageTitle>
 
-<h1 class="text-3xl text-customYellow">search results:</h1>
+<h1 class="text-6xl mb-10">all books.</h1>
 
 @if (BooksList != null)
 {
@@ -24,14 +25,23 @@
 }
 else
 {
-    <h1 class="text-3xl">Nothing found</h1>
+    <h1 class="text-3xl">@_message</h1>
 }
 
 @code {
     public IEnumerable<Book>? BooksList { get; set; }
+    private string _message = "Loading...";
     
     protected override async Task OnInitializedAsync()
     {
+        SpinnerService.Show();
         BooksList = await BookService.GetBooks();
+        
+        if (BooksList == null || !BooksList.Any())
+        {
+            _message = "No books found.";
+        }
+        
+        SpinnerService.Hide();
     }
 }
