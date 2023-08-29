@@ -1,0 +1,33 @@
+<div class="w-full md:w-1/5 rounded bg-customWhite drop-shadow-md flex flex-col text-customBlue font-rubik mb-5 md:mb-0">
+    <img src=@GetBookCoverUrl() alt="Clean Code" class="w-full rounded px-3 py-3">
+    <div class="flex flex-row">
+        <h1 class="font-bold px-3">title:</h1>
+        <p>@Title</p>
+    </div>
+    <div class="flex flex-row">
+        <h1 class="font-bold px-3">author:</h1>
+        <p>@Author</p>
+    </div>
+    <div class="flex flex-row">
+        <h1 class="font-bold px-3">description:</h1>
+        <p>@Description</p>
+    </div>
+    <div class="flex flex-row">
+        <h1 class="font-bold px-3">is Available:</h1>
+        <p>@IsAvailable</p>
+    </div>
+</div>
+
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+    [Parameter] public string Author { get; set; } = string.Empty;
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public string Description { get; set; } = string.Empty;
+    [Parameter] public bool IsAvailable { get; set; }
+    
+    private string GetBookCoverUrl()
+    {
+        return $"images/book-covers/{Id}.jpeg";
+    }
+}

@@ -7,14 +7,14 @@ module.exports = {
         'custom-bg': "url('/images/library-bg.jpg')",
     }),
       colors: {
-        customWhite: "#F8F3D4",
-        customTeal: "#00B8A9",
-        customPink: "#F6416C",
-        customYellow: "#FFDE7D",
-        customBlack: "#303841"
+        customWhite: "#F6F1F1",
+        customBlue: "#2D4059",
+        customRed: "#EA5455",
+        customOrange: "#F07B3F",
+        customYellow: "#FFD460"
       },
       fontFamily: {
-        'standard': ['Rubik', 'sans-serif']
+        'rubik': ['Rubik', 'sans-serif']
       }
   },
   },

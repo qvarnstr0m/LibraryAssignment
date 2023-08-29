@@ -1,12 +1,13 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="w-full h-screen bg-customWhite">
-    <div class="">
-        <NavMenu/>
+<div class="w-full h-screen bg-customBlue">
+    <NavMenu/>
+    <div class="pt-5 md:pt-20 flex flex-col min-h-screen">
+        <main class="flex-grow">
+                <article class="content px-5">
+                    @Body
+                </article>
+            </main>
+            <Footer></Footer>
     </div>
-    <main>
-        <article class="content">
-            @Body
-        </article>
-    </main>
 </div>
