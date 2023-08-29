@@ -6,10 +6,17 @@ module.exports = {
       backgroundImage: theme => ({
         'custom-bg': "url('/images/library-bg.jpg')",
     }),
+      colors: {
+        customWhite: "#F8F3D4",
+        customTeal: "#00B8A9",
+        customPink: "#F6416C",
+        customYellow: "#FFDE7D",
+        customBlack: "#303841"
+      },
       fontFamily: {
-        'english': ['Uncial Antiqua', 'cursive']
+        'standard': ['Rubik', 'sans-serif']
       }
   },
-  }, 
+  },
   plugins: []
 }
