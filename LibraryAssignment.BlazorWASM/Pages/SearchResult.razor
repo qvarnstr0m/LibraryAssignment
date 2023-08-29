@@ -1,8 +1,49 @@
-@page "/searchResult"
+@page "/search-result/{SearchTerm}"
+@using LibraryAssignment.Data.Models
 @using LibraryAssignment.BlazorWASM.Interfaces
 @inject IBookService BookService
-<h3>SearchResult</h3>
+@inject SpinnerService SpinnerService
+
+<PageTitle>search result - library.</PageTitle>
+
+<h1 class="text-6xl mb-10">search result.</h1>
+
+@if (BooksList != null && BooksList.Any())
+{
+    <div class="flex flex-wrap justify-around px-5 py-5">
+        @foreach (var book in BooksList)
+        {
+            <BookCard 
+                Id="@book.Id.ToString()"
+                Title="@book.Title"
+                Author="@book.Author"
+                Description="@book.Description"
+                IsAvailable="@book.IsAvailable" 
+            />
+        }
+    </div>
+}
+else
+{
+    <h1 class="text-3xl">@_message</h1>
+}
 
 @code {
+
+    [Parameter] public string SearchTerm { get; set; }
+    public IEnumerable<Book>? BooksList { get; set; }
+    private string _message = "Loading...";
     
+    protected override async Task OnParametersSetAsync()
+    {
+        SpinnerService.Show();
+        BooksList = await BookService.SearchBooks(SearchTerm);
+        
+        if (BooksList == null || !BooksList.Any())
+        {
+            _message = $"No books found for {SearchTerm}.";
+        }
+        
+        SpinnerService.Hide();
+    }
 }

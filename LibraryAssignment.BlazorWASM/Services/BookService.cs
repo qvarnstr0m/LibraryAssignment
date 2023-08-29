@@ -51,4 +51,21 @@ public class BookService : IBookService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<IEnumerable<Book>?> SearchBooks(string searchTerm)
+    {
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{_booksUrl}/search?searchWord={searchTerm}");
+            Console.WriteLine($"{_booksUrl}/search?searchWord={searchTerm}");
+            var response = await _httpClient.SendAsync(request);
+            var bookList = JsonConvert.DeserializeObject<IEnumerable<Book>>(await response.Content.ReadAsStringAsync());
+            return bookList;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
 }

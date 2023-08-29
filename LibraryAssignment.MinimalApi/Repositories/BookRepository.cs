@@ -9,11 +9,13 @@ public class BookRepository : IBookRepository
 {
     private readonly AppDbContext _dbContext;
     private readonly DbSet<Book> _dbSet;
+    private readonly ILogger<BookRepository> _logger;
     
-    public BookRepository(AppDbContext dbContext)
+    public BookRepository(AppDbContext dbContext, ILogger<BookRepository> logger)
     {
         _dbContext = dbContext;
         _dbSet = _dbContext.Set<Book>();
+        _logger = logger;
     }
     
     public async Task<IEnumerable<Book>> SearchBooks(string searchTerm)

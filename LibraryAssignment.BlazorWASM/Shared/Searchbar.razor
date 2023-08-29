@@ -1,4 +1,6 @@
-<form>   
+@inject NavigationManager NavigationManager
+
+<form @onsubmit="OnSubmit">
     <label for="default-search" class="sr-only">Search</label>
     <div class="relative">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -6,11 +8,16 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
             </svg>
             </div>
-        <input type="search" id="default-search" class="block w-full p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" placeholder="Search for author or title" required>
+        <input @bind="_searchTerm" type="search" id="default-search" class="block w-full p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" placeholder="Search for author or title" required>
         <button type="submit" class="absolute right-2.5 bottom-2.5 bg-customOrange text-customBlue hover:text-customYellow font-medium rounded-lg text-sm px-4 py-2">Sök</button>
     </div>
 </form>
 
 @code {
+    private string _searchTerm = string.Empty;
     
+    private void OnSubmit()
+    {
+        NavigationManager.NavigateTo($"/search-result/{_searchTerm}");
+    }
 }
