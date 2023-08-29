@@ -18,6 +18,7 @@ var configuration = new ConfigurationBuilder()
 
 // Add services to the container.
 builder.Services.AddScoped<IRepository<Book>, Repository<Book>>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseMySql(configuration.GetConnectionString("LocalConnection"), 
@@ -181,5 +182,29 @@ app.MapDelete("api/books/{id:int}", async (int id, IRepository<Book> repository,
     .Produces(204)
     .Produces(500)
     .Produces(404);
+
+app.MapGet("/api/books/search", async (IBookRepository bookRepository, ILogger logger, 
+        [FromQuery] string? searchWord) =>
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(searchWord))
+            {
+                return Results.BadRequest("Search word cannot be empty");
+            }
+            
+            var books = await bookRepository.SearchBooks(searchWord);
+            
+            return Results.Ok(books);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error when searching for books");
+            return Results.StatusCode(500);
+        }})
+    .Produces(200)
+    .Produces<List<Book>>()
+    .Produces(500)
+    .Produces(400);
 
 app.Run();
