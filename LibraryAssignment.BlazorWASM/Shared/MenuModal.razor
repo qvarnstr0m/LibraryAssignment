@@ -1,0 +1,32 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white w-3/4 md:w-1/2 lg:w-1/3 rounded-lg shadow-md p-5">
+        <!-- Close button -->
+        <div class="flex justify-end">
+            <button @onclick="ToggleMenu" class="text-xl font-bold hover:text-gray-600">&times;</button>
+        </div>
+
+        <!-- Menu links -->
+        <ul class="mt-4 space-y-3">
+            <li>
+                <NavLink href="#">Link 1</NavLink>
+            </li>
+            <li>
+                <NavLink href="#">Link 2</NavLink>
+            </li>
+            <li>
+                <NavLink href="#">Link 3</NavLink>
+            </li>
+            <!-- Add more links as needed -->
+        </ul>
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter(Name = "ShowMenuState")]
+    private bool _showMenu { get; set; }
+
+    [CascadingParameter(Name = "ToggleMenuAction")]
+    private Action ToggleMenu { get; set; }
+
+}

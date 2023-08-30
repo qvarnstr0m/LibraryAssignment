@@ -1,20 +1,38 @@
-﻿<div class="flex flex-row font-standard text-customYellow justify-between py-5 px-5 items-center">
+﻿@using Microsoft.AspNetCore.Components.Web
+
+<div class="flex flex-row font-standard text-customYellow justify-between py-5 px-5 items-center">
     <div>
-        <h1 class="mr-3 text-xl md:text-4xl"><NavLink href="" Match="NavLinkMatch.All">library.</NavLink></h1>
+        <h1 class="mr-3 text-xl md:text-4xl">
+            <NavLink href="" Match="NavLinkMatch.All">library.</NavLink>
+        </h1>
     </div>
     <div class="w-full mx-4 hidden md:block md:ml-10">
-        <Searchbar />
+        <Searchbar/>
     </div>
     <div>
         <ul class="flex flex-col md:flex-row text-xl md:text-4xl">
-            <li class="mr-3 hover:underline"><NavLink href="books">menu.</NavLink></li>
+            <li class="mr-3 hover:underline">
+                <button @onclick="ToggleMenu">menu.</button>
+            </li>
         </ul>
     </div>
 </div>
 
 <div class="sm:w-full block md:hidden py-5 px-5 items-center">
-    <Searchbar />
+    <Searchbar/>
 </div>
 
+@if (_showMenu)
+{
+    <MenuModal/>
+}
+
 @code {
+
+    [CascadingParameter(Name = "ShowMenuState")]
+    private bool _showMenu { get; set; }
+
+    [CascadingParameter(Name = "ToggleMenuAction")]
+    private Action ToggleMenu { get; set; }
+
 }
