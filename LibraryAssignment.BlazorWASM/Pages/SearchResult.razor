@@ -10,16 +10,15 @@
 
 @if (BooksList != null && BooksList.Any())
 {
-    <div class="flex flex-wrap justify-around px-5 py-5">
+    <div class="flex flex-wrap justify-between justify-items-start px-5 py-5">
         @foreach (var book in BooksList)
         {
-            <BookCard 
+            <BookCard
                 Id="@book.Id.ToString()"
                 Title="@book.Title"
                 Author="@book.Author"
                 Description="@book.Description"
-                IsAvailable="@book.IsAvailable" 
-            />
+                IsAvailable="@book.IsAvailable"/>
         }
     </div>
 }
@@ -30,20 +29,23 @@ else
 
 @code {
 
-    [Parameter] public string SearchTerm { get; set; }
+    [Parameter]
+    public string SearchTerm { get; set; }
+
     public IEnumerable<Book>? BooksList { get; set; }
     private string _message = "Loading...";
-    
+
     protected override async Task OnParametersSetAsync()
     {
         SpinnerService.Show();
         BooksList = await BookService.SearchBooks(SearchTerm);
-        
+
         if (BooksList == null || !BooksList.Any())
         {
             _message = $"No books found for {SearchTerm}.";
         }
-        
+
         SpinnerService.Hide();
     }
+
 }

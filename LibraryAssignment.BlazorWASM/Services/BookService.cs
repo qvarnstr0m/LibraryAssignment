@@ -15,7 +15,7 @@ public class BookService : IBookService
     {
         _httpClient = httpClient;
     }
-    
+
     public async Task<IEnumerable<Book>?> GetBooks()
     {
         try
@@ -56,8 +56,8 @@ public class BookService : IBookService
     {
         try
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{_booksUrl}/search?searchWord={searchTerm}");
-            Console.WriteLine($"{_booksUrl}/search?searchWord={searchTerm}");
+            string requestUri = $"{_booksUrl}/search?searchWord={searchTerm}";
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
             var response = await _httpClient.SendAsync(request);
             var bookList = JsonConvert.DeserializeObject<IEnumerable<Book>>(await response.Content.ReadAsStringAsync());
             return bookList;
