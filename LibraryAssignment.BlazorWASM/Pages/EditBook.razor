@@ -11,7 +11,7 @@
 @if (_book != null)
 {
     <div class="md:w-1/2 mt-5">
-        <form @onsubmit="OnSubmit">
+        <form @onsubmit="@OnSubmit">
             <label for="id" class="mb-2 text-lg">id.</label>
             <div class="relative">
                 <input @bind="@_book.Id" type="number" id="id" class="mb-2 block p-4 pl-10 text-md border rounded-lg bg-customWhite text-gray-500" readonly/>
@@ -34,7 +34,7 @@
                     <input @bind="@_book.IsAvailable" type="checkbox" id="isavailable" class="ml-2 block text-xl bg-customWhite text-customBlue"/>
                 </div>
             </div>
-            <button type="submit" @onclick="OnSubmit" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2">
+            <button type="submit" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2">
                 Save
             </button>
         </form>
@@ -45,7 +45,18 @@ else
     <h1 class="text-3xl">@_message</h1>
 }
 
+@if (_showInfoModal)
+{
+    <InfoModal Message="@_message"/>
+}
+
 @code {
+
+    [CascadingParameter(Name = "ShowInfoModalState")]
+    private bool _showInfoModal { get; set; }
+
+    [CascadingParameter(Name = "ToggleInfoModalAction")]
+    private Action ToggleInfoModal { get; set; }
 
     [Parameter]
     public int Id { get; set; }
@@ -72,7 +83,7 @@ else
         {
             return;
         }
-        
+
         SpinnerService.Show();
 
         var updateBookDto = Mapper.Map<UpdateBookDto>(_book);
@@ -81,13 +92,16 @@ else
 
         if (response.isSuccess)
         {
-            _message = "Book updated.";
+            _message = "Book updated successfully.";
         }
         else
         {
             _message = response.message;
         }
-
+        
+        _showInfoModal = true; //This is a weird workaround to make bool to work with cascading parameters.
+        ToggleInfoModal(); //This is a weird workaround to make bool to work with cascading parameters.
+        
         SpinnerService.Hide();
     }
 

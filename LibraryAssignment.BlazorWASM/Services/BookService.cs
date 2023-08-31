@@ -70,7 +70,7 @@ public class BookService : IBookService
                 return (true, "Book updated successfully");
             }
 
-            return (false, "Error updating book:" + response.StatusCode);
+            return (false, "Error updating book. Error message: " + response.StatusCode);
         }
         catch (Exception e)
         {
