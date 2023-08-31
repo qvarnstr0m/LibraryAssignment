@@ -32,9 +32,20 @@ public class BookService : IBookService
         }
     }
 
-    public async Task<Book> GetBook(int id)
+    public async Task<Book?> GetBook(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, _booksUrl + $"/{id}");
+            var response = await _httpClient.SendAsync(request);
+            var book = JsonConvert.DeserializeObject<Book>(await response.Content.ReadAsStringAsync());
+            return book;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
     }
 
     public async Task<bool> AddBook(CreateBookDto book)
