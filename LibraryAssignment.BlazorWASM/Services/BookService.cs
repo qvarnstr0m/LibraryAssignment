@@ -49,9 +49,29 @@ public class BookService : IBookService
         }
     }
 
-    public async Task<bool> AddBookAsync(CreateBookDto book)
+    public async Task<(bool isSuccess, string message)> CreateBookAsync(CreateBookDto book)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, _booksUrl)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(book), Encoding.UTF8, "application/json")
+            };
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, "Book created successfully");
+            }
+
+            return (false, "Error creating book. Error message: " + response.StatusCode);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return (false, "Error creating book:" + e.Message);
+        }
     }
 
     public async Task<(bool isSuccess, string message)> UpdateBookAsync(int id, UpdateBookDto book)

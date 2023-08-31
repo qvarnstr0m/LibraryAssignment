@@ -98,11 +98,11 @@ else
         {
             _message = response.message;
         }
-        
+
+        SpinnerService.Hide();
+
         _showInfoModal = true; //This is a weird workaround to make bool to work with cascading parameters.
         ToggleInfoModal(); //This is a weird workaround to make bool to work with cascading parameters.
-        
-        SpinnerService.Hide();
     }
 
 }

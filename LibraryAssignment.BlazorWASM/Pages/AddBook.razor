@@ -1,0 +1,83 @@
+@page "/add-book"
+@using LibraryAssignment.BlazorWASM.Interfaces
+@using LibraryAssignment.Data.Models
+@using AutoMapper
+@using LibraryAssignment.Data.DTOs
+@inject IBookService BookService
+@inject SpinnerService SpinnerService
+@inject IMapper Mapper
+
+<h1 class="text-3xl mt-5">add book.</h1>
+
+<div class="md:w-1/2 mt-5">
+    <form @onsubmit="@OnSubmit">
+        <label for="title" class="mb-2 text-lg">title.</label>
+        <div class="relative">
+            <input @bind="@_book.Title" type="text" id="title" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
+        </div>
+        <label for="author" class="mb-2 text-lg">author.</label>
+        <div class="relative">
+            <input @bind="@_book.Author" type="text" id="author" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
+        </div>
+        <label for="description" class="mb-2 text-lg">description.</label>
+        <div class="relative">
+            <textarea @bind="@_book.Description" type="" id="description" rows="5" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required></textarea>
+        </div>
+        <div class="flex flex-row items-center mb-5">
+            <label for="isavailable" class="text-lg">is available.</label>
+            <div class="relative">
+                <input @bind="@_book.IsAvailable" type="checkbox" id="isavailable" class="ml-2 block text-xl bg-customWhite text-customBlue"/>
+            </div>
+        </div>
+        <button type="submit" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2">
+            Save
+        </button>
+    </form>
+</div>
+
+
+@if (_showInfoModal)
+{
+    <InfoModal Message="@_message"/>
+}
+
+@code {
+
+    [CascadingParameter(Name = "ShowInfoModalState")]
+    private bool _showInfoModal { get; set; }
+
+    [CascadingParameter(Name = "ToggleInfoModalAction")]
+    private Action ToggleInfoModal { get; set; }
+
+    private string _message = "Loading...";
+    private Book? _book = new();
+
+    private async Task OnSubmit()
+    {
+        if (_book.Description.Length <= 0 || _book.Title.Length <= 0 || _book.Author.Length <= 0)
+        {
+            return;
+        }
+
+        SpinnerService.Show();
+
+        var createBookDto = Mapper.Map<CreateBookDto>(_book);
+
+        var response = await BookService.CreateBookAsync(createBookDto);
+
+        if (response.isSuccess)
+        {
+            _message = "Book created successfully.";
+        }
+        else
+        {
+            _message = response.message;
+        }
+
+        SpinnerService.Hide();
+
+        _showInfoModal = true; //This is a weird workaround to make bool to work with cascading parameters.
+        ToggleInfoModal(); //This is a weird workaround to make bool to work with cascading parameters.
+    }
+
+}
