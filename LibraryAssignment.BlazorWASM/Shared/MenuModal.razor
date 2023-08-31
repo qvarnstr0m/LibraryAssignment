@@ -1,19 +1,19 @@
 <div class="fixed inset-0 z-50 flex items-start justify-end bg-black bg-opacity-50 p-4">
     <div class="bg-customWhite  text-customBlue w-3/4 md:w-1/3 lg:w-1/4 max-h-3/4 rounded-lg shadow-md p-5 overflow-y-auto">
         <div class="flex justify-end">
-            <button @onclick="ToggleMenu" class="text-3xl font-bold">&times;</button>
+            <button @onclick="ToggleMenu" class="text-3xl font-bold hover:text-customYellow">&times;</button>
         </div>
         <ul class="mt-2 space-y-3 text-3xl">
-            <li>
+            <li class="hover:underline">
                 <NavLink href="/" @onclick="ToggleMenu">home.</NavLink>
             </li>
-            <li>
+            <li class="hover:underline">
                 <NavLink href="/books" @onclick="ToggleMenu">all books.</NavLink>
             </li>
-            <li>
+            <li class="hover:underline">
                 <NavLink href="#" @onclick="ToggleMenu">about library.</NavLink>
             </li>
-            <li>
+            <li class="hover:underline">
                 <NavLink href="#" @onclick="ToggleMenu">contact.</NavLink>
             </li>
         </ul>

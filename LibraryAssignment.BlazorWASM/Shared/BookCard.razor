@@ -1,18 +1,18 @@
 <div class="w-full md:w-1/5 rounded bg-customWhite drop-shadow-lg text-customBlue flex flex-col font-rubik mb-5 md:mb-0">
-    <div class="flex flex-col items-center">
-        <img src=@GetBookCoverUrl() alt="@Title book cover" class="rounded-lg drop-shadow-md w-4/5 my-5">
+    <div class="flex flex-col items-center h-4/5">
+        <img src=@GetBookCoverUrl() alt="@Title book cover" class="rounded-lg drop-shadow-md w-4/5 h-fit my-5">
     </div>
     <div class="flex flex-row">
         <h1 class="font-bold px-3">title:</h1>
-        <p>@Title</p>
+        <p>@ShortenString(Title)</p>
     </div>
     <div class="flex flex-row">
         <h1 class="font-bold px-3">author:</h1>
-        <p>@Author</p>
+        <p>@ShortenString(Author)</p>
     </div>
     <div class="flex flex-row">
         <h1 class="font-bold px-3">description:</h1>
-        <p>@Description</p>
+        <p>@ShortenString(Description)</p>
     </div>
     <div class="flex flex-row">
         <h1 class="font-bold px-3">is available:</h1>
@@ -27,18 +27,46 @@
             }
         </p>
     </div>
+    <div class="flex flex-row">
+        <button type="submit" class="bg-customOrange text-customBlue mx-2 my-2 hover:text-customYellow rounded-lg px-4 py-2">
+            Details
+        </button>
+        <button type="submit" class="bg-customOrange text-customBlue mx-2 my-2 hover:text-customYellow rounded-lg px-4 py-2">
+            Edit
+        </button>
+    </div>
 </div>
 
 
 @code {
-    [Parameter] public string Id { get; set; } = string.Empty;
-    [Parameter] public string Author { get; set; } = string.Empty;
-    [Parameter] public string Title { get; set; } = string.Empty;
-    [Parameter] public string Description { get; set; } = string.Empty;
-    [Parameter] public bool IsAvailable { get; set; }
-    
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Author { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Description { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool IsAvailable { get; set; }
+
     private string GetBookCoverUrl()
     {
         return $"images/book-covers/{Id}.jpeg";
     }
+
+    private string ShortenString(string stringToShorten)
+    {
+        if (stringToShorten.Length > 16)
+        {
+            return stringToShorten.Substring(0, 16) + "...";
+        }
+        return stringToShorten;
+    }
+
 }
