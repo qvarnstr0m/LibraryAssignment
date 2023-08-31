@@ -1,3 +1,4 @@
+using System.Text;
 using LibraryAssignment.BlazorWASM.Interfaces;
 using LibraryAssignment.Data.DTOs;
 using LibraryAssignment.Data.Models;
@@ -53,9 +54,29 @@ public class BookService : IBookService
         throw new NotImplementedException();
     }
 
-    public async Task<bool> UpdateBookAsync(int id, UpdateBookDto book)
+    public async Task<(bool isSuccess, string message)> UpdateBookAsync(int id, UpdateBookDto book)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Put, _booksUrl + $"/{id}")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(book), Encoding.UTF8, "application/json")
+            };
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, "Book updated successfully");
+            }
+
+            return (false, "Error updating book:" + response.StatusCode);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return (false, "Error updating book:" + e.Message);
+        }
     }
 
     public async Task<bool> DeleteBookAsync(int id)

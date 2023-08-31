@@ -124,15 +124,20 @@ app.MapPut("api/books/{id:int}", async (int id, [FromBody] UpdateBookDto bookDto
     {
         try
         {
+            Console.WriteLine("id: " + id);
+            Console.WriteLine("bookDto.Id: " + bookDto.Id + " bookDto.Title: " + bookDto.Title);
             if (id != bookDto.Id)
             {
+                Console.WriteLine("id does not match");
                 return Results.BadRequest("Book id does not match");
+                
             }
             
             var validationResult = await validator.ValidateAsync(bookDto);
             
             if (!validationResult.IsValid)
             {
+                Console.WriteLine("validationResult is not valid");
                 return Results.BadRequest(validationResult.Errors);
             }
 

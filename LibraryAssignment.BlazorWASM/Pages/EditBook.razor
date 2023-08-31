@@ -1,8 +1,11 @@
 @page "/edit-book/{Id:int}"
 @using LibraryAssignment.BlazorWASM.Interfaces
 @using LibraryAssignment.Data.Models
+@using AutoMapper
+@using LibraryAssignment.Data.DTOs
 @inject IBookService BookService
 @inject SpinnerService SpinnerService
+@inject IMapper Mapper
 
 <h1 class="text-3xl mt-5">edit book.</h1>
 @if (_book != null)
@@ -15,19 +18,21 @@
             </div>
             <label for="title" class="mb-2 text-lg">title.</label>
             <div class="relative">
-                <input @bind="@_book.Title" type="text" id="title" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue"/>
+                <input @bind="@_book.Title" type="text" id="title" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
             </div>
             <label for="author" class="mb-2 text-lg">author.</label>
             <div class="relative">
-                <input @bind="@_book.Author" type="text" id="author" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue"/>
+                <input @bind="@_book.Author" type="text" id="author" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
             </div>
             <label for="description" class="mb-2 text-lg">description.</label>
             <div class="relative">
-                <textarea @bind="@_book.Description" type="" id="description" rows="5" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue"></textarea>
+                <textarea @bind="@_book.Description" type="" id="description" rows="5" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required></textarea>
             </div>
-            <label for="isavailable" class="mb-2 text-lg">is available.</label>
-            <div class="relative">
-                <input @bind="@_book.IsAvailable" type="checkbox" id="isavailable" class="mb-2 block p-4 text-md bg-customWhite text-customBlue"/>
+            <div class="flex flex-row items-center mb-5">
+                <label for="isavailable" class="text-lg">is available.</label>
+                <div class="relative">
+                    <input @bind="@_book.IsAvailable" type="checkbox" id="isavailable" class="ml-2 block text-xl bg-customWhite text-customBlue"/>
+                </div>
             </div>
             <button type="submit" @onclick="OnSubmit" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2">
                 Save
@@ -63,9 +68,25 @@ else
 
     private async Task OnSubmit()
     {
+        if (_book.Description.Length <= 0 || _book.Title.Length <= 0 || _book.Author.Length <= 0)
+        {
+            return;
+        }
+        
         SpinnerService.Show();
 
-    // await BookService.UpdateBookAsync(_book);
+        var updateBookDto = Mapper.Map<UpdateBookDto>(_book);
+
+        var response = await BookService.UpdateBookAsync(_book.Id, updateBookDto);
+
+        if (response.isSuccess)
+        {
+            _message = "Book updated.";
+        }
+        else
+        {
+            _message = response.message;
+        }
 
         SpinnerService.Hide();
     }
