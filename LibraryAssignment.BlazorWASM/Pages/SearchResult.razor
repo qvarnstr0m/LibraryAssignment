@@ -38,7 +38,7 @@ else
     protected override async Task OnParametersSetAsync()
     {
         SpinnerService.Show();
-        BooksList = await BookService.SearchBooks(SearchTerm);
+        BooksList = await BookService.SearchBooksAsync(SearchTerm);
 
         if (BooksList == null || !BooksList.Any())
         {

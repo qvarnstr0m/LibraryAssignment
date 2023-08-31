@@ -16,7 +16,7 @@ public class BookService : IBookService
         _httpClient = httpClient;
     }
 
-    public async Task<IEnumerable<Book>?> GetBooks()
+    public async Task<IEnumerable<Book>?> GetBooksAsync()
     {
         try
         {
@@ -32,7 +32,7 @@ public class BookService : IBookService
         }
     }
 
-    public async Task<Book?> GetBook(int id)
+    public async Task<Book?> GetBookAsync(int id)
     {
         try
         {
@@ -48,22 +48,22 @@ public class BookService : IBookService
         }
     }
 
-    public async Task<bool> AddBook(CreateBookDto book)
+    public async Task<bool> AddBookAsync(CreateBookDto book)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> UpdateBook(int id, UpdateBookDto book)
+    public async Task<bool> UpdateBookAsync(int id, UpdateBookDto book)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> DeleteBook(int id)
+    public async Task<bool> DeleteBookAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<Book>?> SearchBooks(string searchTerm)
+    public async Task<IEnumerable<Book>?> SearchBooksAsync(string searchTerm)
     {
         try
         {

@@ -35,7 +35,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         SpinnerService.Show();
-        BooksList = await BookService.GetBooks();
+        BooksList = await BookService.GetBooksAsync();
         
         if (BooksList == null || !BooksList.Any())
         {

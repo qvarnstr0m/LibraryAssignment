@@ -69,7 +69,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         SpinnerService.Show();
-        Book = await BookService.GetBook(Id);
+        Book = await BookService.GetBookAsync(Id);
 
         if (Book == null)
         {

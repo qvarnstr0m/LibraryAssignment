@@ -1,6 +1,73 @@
-@page "/EditBook"
-<h3>EditBook</h3>
+@page "/edit-book/{Id:int}"
+@using LibraryAssignment.BlazorWASM.Interfaces
+@using LibraryAssignment.Data.Models
+@inject IBookService BookService
+@inject SpinnerService SpinnerService
+
+<h1 class="text-3xl mt-5">edit book.</h1>
+@if (_book != null)
+{
+    <div class="md:w-1/2 mt-5">
+        <form @onsubmit="OnSubmit">
+            <label for="id" class="mb-2 text-lg">id.</label>
+            <div class="relative">
+                <input @bind="@_book.Id" type="number" id="id" class="mb-2 block p-4 pl-10 text-md border rounded-lg bg-customWhite text-gray-500" readonly/>
+            </div>
+            <label for="title" class="mb-2 text-lg">title.</label>
+            <div class="relative">
+                <input @bind="@_book.Title" type="text" id="title" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue"/>
+            </div>
+            <label for="author" class="mb-2 text-lg">author.</label>
+            <div class="relative">
+                <input @bind="@_book.Author" type="text" id="author" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue"/>
+            </div>
+            <label for="description" class="mb-2 text-lg">description.</label>
+            <div class="relative">
+                <textarea @bind="@_book.Description" type="" id="description" rows="5" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue"></textarea>
+            </div>
+            <label for="isavailable" class="mb-2 text-lg">is available.</label>
+            <div class="relative">
+                <input @bind="@_book.IsAvailable" type="checkbox" id="isavailable" class="mb-2 block p-4 text-md bg-customWhite text-customBlue"/>
+            </div>
+            <button type="submit" @onclick="OnSubmit" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2">
+                Save
+            </button>
+        </form>
+    </div>
+}
+else
+{
+    <h1 class="text-3xl">@_message</h1>
+}
 
 @code {
-    
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private string _message = "Loading...";
+    private Book? _book;
+
+    protected override async Task OnInitializedAsync()
+    {
+        SpinnerService.Show();
+        _book = await BookService.GetBookAsync(Id);
+
+        if (_book == null)
+        {
+            _message = "No book found.";
+        }
+
+        SpinnerService.Hide();
+    }
+
+    private async Task OnSubmit()
+    {
+        SpinnerService.Show();
+
+    // await BookService.UpdateBookAsync(_book);
+
+        SpinnerService.Hide();
+    }
+
 }
