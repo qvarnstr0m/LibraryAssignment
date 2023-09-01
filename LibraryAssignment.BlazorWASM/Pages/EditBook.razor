@@ -38,6 +38,10 @@
                 Save
             </button>
         </form>
+
+        <button @onclick="DeleteBook" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2">
+            Delete
+        </button>
     </div>
 }
 else
@@ -63,6 +67,7 @@ else
 
     private string _message = "Loading...";
     private Book? _book;
+    private bool deleteBook = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -90,19 +95,29 @@ else
 
         var response = await BookService.UpdateBookAsync(_book.Id, updateBookDto);
 
-        if (response.isSuccess)
-        {
-            _message = "Book updated successfully.";
-        }
-        else
-        {
-            _message = response.message;
-        }
+        _message = response.message;
 
         SpinnerService.Hide();
 
         _showInfoModal = true; //This is a weird workaround to make bool to work with cascading parameters.
         ToggleInfoModal(); //This is a weird workaround to make bool to work with cascading parameters.
+    }
+
+    private async Task DeleteBook()
+    {
+        if (deleteBook)
+        {
+            SpinnerService.Show();
+
+            var response = await BookService.DeleteBookAsync(_book.Id);
+
+            _message = response.message;
+
+            SpinnerService.Hide();
+
+            _showInfoModal = true; //This is a weird workaround to make bool to work with cascading parameters.
+            ToggleInfoModal(); //This is a weird workaround to make bool to work with cascading parameters.
+        }
     }
 
 }

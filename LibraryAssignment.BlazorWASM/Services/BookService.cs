@@ -70,7 +70,7 @@ public class BookService : IBookService
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return (false, "Error creating book:" + e.Message);
+            return (false, "Internal server error: " + e.Message);
         }
     }
 
@@ -95,13 +95,29 @@ public class BookService : IBookService
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return (false, "Error updating book:" + e.Message);
+            return (false, "Internal server error: " + e.Message);
         }
     }
 
-    public async Task<bool> DeleteBookAsync(int id)
+    public async Task<(bool isSuccess, string message)> DeleteBookAsync(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete, _booksUrl + $"/{id}");
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, "Book deleted successfully");
+            }
+
+            return (false, "Error deleting book. Error message: " + response.StatusCode);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return (false, "Internal server error: " + e.Message);
+        }
     }
 
     public async Task<IEnumerable<Book>?> SearchBooksAsync(string searchTerm)
