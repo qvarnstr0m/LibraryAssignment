@@ -6,43 +6,48 @@
 @inject IBookService BookService
 @inject SpinnerService SpinnerService
 @inject IMapper Mapper
+@inject NavigationManager NavigationManager
+
+<PageTitle>edit book - library.</PageTitle>
 
 <h1 class="text-3xl mt-5">edit book.</h1>
 @if (_book != null)
 {
-    <div class="md:w-1/2 mt-5">
-        <form @onsubmit="@OnSubmit">
-            <label for="id" class="mb-2 text-lg">id.</label>
-            <div class="relative">
-                <input @bind="@_book.Id" type="number" id="id" class="mb-2 block p-4 pl-10 text-md border rounded-lg bg-customWhite text-gray-500" readonly/>
-            </div>
-            <label for="title" class="mb-2 text-lg">title.</label>
-            <div class="relative">
-                <input @bind="@_book.Title" type="text" id="title" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
-            </div>
-            <label for="author" class="mb-2 text-lg">author.</label>
-            <div class="relative">
-                <input @bind="@_book.Author" type="text" id="author" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
-            </div>
-            <label for="description" class="mb-2 text-lg">description.</label>
-            <div class="relative">
-                <textarea @bind="@_book.Description" type="" id="description" rows="5" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required></textarea>
-            </div>
-            <div class="flex flex-row items-center mb-5">
-                <label for="isavailable" class="text-lg">is available.</label>
+    <CascadingValue Value="deleteBook" Name="DeleteBook">
+        <div class="md:w-1/2 mt-5">
+            <form @onsubmit="@OnSubmit">
+                <label for="id" class="mb-2 text-lg">id.</label>
                 <div class="relative">
-                    <input @bind="@_book.IsAvailable" type="checkbox" id="isavailable" class="ml-2 block text-xl bg-customWhite text-customBlue"/>
+                    <input @bind="@_book.Id" type="number" id="id" class="mb-2 block p-4 pl-10 text-md border rounded-lg bg-customWhite text-gray-500" readonly/>
                 </div>
-            </div>
-            <button type="submit" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2">
-                Save
-            </button>
-        </form>
+                <label for="title" class="mb-2 text-lg">title.</label>
+                <div class="relative">
+                    <input @bind="@_book.Title" type="text" id="title" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
+                </div>
+                <label for="author" class="mb-2 text-lg">author.</label>
+                <div class="relative">
+                    <input @bind="@_book.Author" type="text" id="author" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
+                </div>
+                <label for="description" class="mb-2 text-lg">description.</label>
+                <div class="relative">
+                    <textarea @bind="@_book.Description" type="" id="description" rows="5" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required></textarea>
+                </div>
+                <div class="flex flex-row items-center mb-5">
+                    <label for="isavailable" class="text-lg">is available.</label>
+                    <div class="relative">
+                        <input @bind="@_book.IsAvailable" type="checkbox" id="isavailable" class="ml-2 block text-xl bg-customWhite text-customBlue"/>
+                    </div>
+                </div>
+                <button type="submit" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2">
+                    Save
+                </button>
+            </form>
 
-        <button @onclick="DeleteBook" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2">
-            Delete
-        </button>
-    </div>
+            <button @onclick="ShowDeleteConfirmation" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2 mt-5">
+                Delete book
+            </button>
+        </div>
+    </CascadingValue>
 }
 else
 {
@@ -52,6 +57,11 @@ else
 @if (_showInfoModal)
 {
     <InfoModal Message="@_message"/>
+}
+
+@if (_showChoiceModal)
+{
+    <ChoiceModal Message="@_message" OnDeleteConfirmation="ProceedWithDelete" CloseModal="ToggleChoicheModal"/>
 }
 
 @code {
@@ -67,7 +77,8 @@ else
 
     private string _message = "Loading...";
     private Book? _book;
-    private bool deleteBook = true;
+    private bool deleteBook = false;
+    public bool _showChoiceModal { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -103,21 +114,37 @@ else
         ToggleInfoModal(); //This is a weird workaround to make bool to work with cascading parameters.
     }
 
-    private async Task DeleteBook()
+    private void ShowDeleteConfirmation()
     {
-        if (deleteBook)
+        _message = "Are you sure you want to delete this book?";
+        _showChoiceModal = true;
+    }
+
+    private async Task ProceedWithDelete()
+    {
+        SpinnerService.Show();
+        var response = await BookService.DeleteBookAsync(_book.Id);
+        
+        if (response.isSuccess)
         {
-            SpinnerService.Show();
-
-            var response = await BookService.DeleteBookAsync(_book.Id);
-
-            _message = response.message;
-
             SpinnerService.Hide();
-
-            _showInfoModal = true; //This is a weird workaround to make bool to work with cascading parameters.
-            ToggleInfoModal(); //This is a weird workaround to make bool to work with cascading parameters.
+            NavigationManager.NavigateTo("/deleted-book");
         }
+        else
+        {
+            _message = response.message;
+            SpinnerService.Hide();
+            _showInfoModal = true;
+            ToggleInfoModal();
+            _showChoiceModal = false;
+        }
+        
+    }
+    
+    private Task ToggleChoicheModal()
+    {
+        _showChoiceModal = false;
+        return Task.CompletedTask;
     }
 
 }

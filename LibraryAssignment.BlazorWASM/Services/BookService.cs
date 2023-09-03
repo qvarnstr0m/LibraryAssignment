@@ -17,7 +17,7 @@ public class BookService : IBookService
         _httpClient = httpClient;
     }
 
-    public async Task<IEnumerable<Book>?> GetBooksAsync()
+    public async Task<IEnumerable<Book?>?> GetBooksAsync()
     {
         try
         {
