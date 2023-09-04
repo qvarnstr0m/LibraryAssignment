@@ -10,5 +10,5 @@ public interface IBookService
     Task<(bool isSuccess, string message)> CreateBookAsync(CreateBookDto book);
     Task<(bool isSuccess, string message)> UpdateBookAsync(int id, UpdateBookDto book);
     Task<(bool isSuccess, string message)> DeleteBookAsync(int id);
-    Task<IEnumerable<Book>?> SearchBooksAsync(string searchTerm);
+    Task<(bool isSuccess, IEnumerable<Book>? books)> SearchBooksAsync(string searchTerm);
 }

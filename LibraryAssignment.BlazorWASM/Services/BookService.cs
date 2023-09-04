@@ -120,7 +120,7 @@ public class BookService : IBookService
         }
     }
 
-    public async Task<IEnumerable<Book>?> SearchBooksAsync(string searchTerm)
+    public async Task<(bool isSuccess, IEnumerable<Book>? books)> SearchBooksAsync(string searchTerm)
     {
         try
         {
@@ -128,12 +128,12 @@ public class BookService : IBookService
             var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
             var response = await _httpClient.SendAsync(request);
             var bookList = JsonConvert.DeserializeObject<IEnumerable<Book>>(await response.Content.ReadAsStringAsync());
-            return bookList;
+            return (true, bookList);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return null;
+            return (false, null);
         }
     }
 }

@@ -37,12 +37,25 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
+        BooksList = null;
+        
         SpinnerService.Show();
-        BooksList = await BookService.SearchBooksAsync(SearchTerm);
 
-        if (BooksList == null || !BooksList.Any())
+        var result = await BookService.SearchBooksAsync(SearchTerm);
+
+        if (result.isSuccess && result.books.Any())
+        {
+            BooksList = result.books;
+        }
+
+        else if (result.isSuccess && !result.books.Any())
         {
             _message = $"No books found for {SearchTerm}.";
+        }
+
+        if (!result.isSuccess)
+        {
+            _message = $"There was an error while searching for {SearchTerm}, please try again later.";
         }
 
         SpinnerService.Hide();
