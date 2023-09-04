@@ -83,11 +83,15 @@ else
     protected override async Task OnInitializedAsync()
     {
         SpinnerService.Show();
-        _book = await BookService.GetBookAsync(Id);
+        var result = await BookService.GetBookAsync(Id);
 
-        if (_book == null)
+        if (!result.isSuccess)
         {
-            _message = "No book found.";
+            _message = result.message;
+        }
+        else
+        {
+            _book = result.book;
         }
 
         SpinnerService.Hide();
@@ -124,7 +128,7 @@ else
     {
         SpinnerService.Show();
         var response = await BookService.DeleteBookAsync(_book.Id);
-        
+
         if (response.isSuccess)
         {
             SpinnerService.Hide();
@@ -138,9 +142,8 @@ else
             ToggleInfoModal();
             _showChoiceModal = false;
         }
-        
     }
-    
+
     private Task ToggleChoicheModal()
     {
         _showChoiceModal = false;

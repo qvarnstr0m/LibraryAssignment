@@ -69,11 +69,15 @@ else
     protected override async Task OnInitializedAsync()
     {
         SpinnerService.Show();
-        Book = await BookService.GetBookAsync(Id);
+        var result = await BookService.GetBookAsync(Id);
 
-        if (Book == null)
+        if (!result.isSuccess)
         {
-            _message = "No book found.";
+            _message = result.message;
+        }
+        else
+        {
+            Book = result.book;
         }
 
         SpinnerService.Hide();
@@ -83,7 +87,7 @@ else
     {
         return $"images/book-covers/{Id}.jpeg";
     }
-    
+
     private void OnSubmit()
     {
         NavigationManager.NavigateTo($"/edit-book/{Id}");

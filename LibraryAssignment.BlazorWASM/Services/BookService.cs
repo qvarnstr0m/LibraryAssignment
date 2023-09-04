@@ -33,19 +33,25 @@ public class BookService : IBookService
         }
     }
 
-    public async Task<Book?> GetBookAsync(int id)
+    public async Task<(bool isSuccess, Book? book, string message)> GetBookAsync(int id)
     {
         try
         {
             var request = new HttpRequestMessage(HttpMethod.Get, _booksUrl + $"/{id}");
             var response = await _httpClient.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return (false, null, "Book not found, status code: " + response.StatusCode);
+            }
+
             var book = JsonConvert.DeserializeObject<Book>(await response.Content.ReadAsStringAsync());
-            return book;
+            return (true, book, "Book found");
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return null;
+            return (false, null, "Internal server error: " + e.Message);
         }
     }
 

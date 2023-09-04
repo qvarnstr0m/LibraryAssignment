@@ -6,7 +6,7 @@ namespace LibraryAssignment.BlazorWASM.Interfaces;
 public interface IBookService
 {
     Task<IEnumerable<Book?>?> GetBooksAsync();
-    Task<Book?> GetBookAsync(int id);
+    Task<(bool isSuccess, Book? book, string message)> GetBookAsync(int id);
     Task<(bool isSuccess, string message)> CreateBookAsync(CreateBookDto book);
     Task<(bool isSuccess, string message)> UpdateBookAsync(int id, UpdateBookDto book);
     Task<(bool isSuccess, string message)> DeleteBookAsync(int id);
