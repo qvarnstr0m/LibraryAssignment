@@ -19,10 +19,10 @@
 
 @code {
 
-    [CascadingParameter(Name = "ShowMenuState")]
-    private bool _showMenu { get; set; }
+    [Parameter]
+    public bool ShowMenu { get; set; }
 
-    [CascadingParameter(Name = "ToggleMenuAction")]
-    private Action ToggleMenu { get; set; }
+    [Parameter]
+    public Action ToggleMenu { get; set; }
 
 }

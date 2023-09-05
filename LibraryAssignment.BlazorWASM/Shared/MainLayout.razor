@@ -1,19 +1,16 @@
 ﻿@inherits LayoutComponentBase
+
 <div class="w-full min-h-screen bg-customBlue">
     <Spinner></Spinner>
-    <CascadingValue Value="_showMenu" Name="ShowMenuState">
-        <CascadingValue Value="ToggleMenu" Name="ToggleMenuAction">
-            <NavMenu/>
-            <div class="pt-5 md:mt-20 flex flex-col min-h-screen">
-                <main class="flex-grow">
-                    <article class="content px-5">
-                        @Body
-                    </article>
-                </main>
-                <Footer></Footer>
-            </div>
-        </CascadingValue>
-    </CascadingValue>
+    <NavMenu ShowMenu="@_showMenu" ToggleMenu="@ToggleMenu"/>
+    <div class="pt-5 md:mt-20 flex flex-col min-h-screen">
+        <main class="flex-grow">
+            <article class="content px-5">
+                @Body
+            </article>
+        </main>
+        <Footer></Footer>
+    </div>
 </div>
 
 @code {
