@@ -57,21 +57,15 @@ else
 
 @if (_showInfoModal)
 {
-    <InfoModal Message="@_message"/>
+    <InfoModal Message="@_message" CloseInfoModal="ToggleInfoModal"/>
 }
 
 @if (_showChoiceModal)
 {
-    <ChoiceModal Message="@_message" OnDeleteConfirmation="ProceedWithDelete" CloseModal="ToggleChoicheModal"/>
+    <ChoiceModal Message="@_message" OnDeleteConfirmation="ProceedWithDelete" CloseModal="ToggleChoiceModal"/>
 }
 
 @code {
-
-    [CascadingParameter(Name = "ShowInfoModalState")]
-    private bool _showInfoModal { get; set; }
-
-    [CascadingParameter(Name = "ToggleInfoModalAction")]
-    private Action ToggleInfoModal { get; set; }
 
     [Parameter]
     public int Id { get; set; }
@@ -79,6 +73,7 @@ else
     private string _message = "Loading...";
     private Book? _book;
     private bool deleteBook = false;
+    public bool _showInfoModal { get; set; }
     public bool _showChoiceModal { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -104,19 +99,12 @@ else
         {
             return;
         }
-
         SpinnerService.Show();
-
         var updateBookDto = Mapper.Map<UpdateBookDto>(_book);
-
         var response = await BookService.UpdateBookAsync(_book.Id, updateBookDto);
-
         _message = response.message;
-
         SpinnerService.Hide();
-
-        _showInfoModal = true; //This is a weird workaround to make bool to work with cascading parameters.
-        ToggleInfoModal(); //This is a weird workaround to make bool to work with cascading parameters.
+        _showInfoModal = true;
     }
 
     private void ShowDeleteConfirmation()
@@ -139,15 +127,19 @@ else
         {
             _message = response.message;
             SpinnerService.Hide();
-            _showInfoModal = true;
-            ToggleInfoModal();
             _showChoiceModal = false;
         }
     }
 
-    private Task ToggleChoicheModal()
+    private Task ToggleChoiceModal()
     {
         _showChoiceModal = false;
+        return Task.CompletedTask;
+    }
+
+    private Task ToggleInfoModal()
+    {
+        _showInfoModal = false;
         return Task.CompletedTask;
     }
 

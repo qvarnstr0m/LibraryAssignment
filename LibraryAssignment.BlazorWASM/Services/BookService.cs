@@ -17,19 +17,25 @@ public class BookService : IBookService
         _httpClient = httpClient;
     }
 
-    public async Task<IEnumerable<Book?>?> GetBooksAsync()
+    public async Task<(bool isSuccess, IEnumerable<Book?>? books, string message)> GetBooksAsync()
     {
         try
         {
             var request = new HttpRequestMessage(HttpMethod.Get, _booksUrl);
             var response = await _httpClient.SendAsync(request);
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                return (false, null, "Error retrieving books, status code: " + response.StatusCode);
+            }
+            
             var bookList = JsonConvert.DeserializeObject<IEnumerable<Book>>(await response.Content.ReadAsStringAsync());
-            return bookList;
+            return (true, bookList, "Books retrieved successfully");
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return null;
+            return (false, null, "Internal server error: " + e.Message);
         }
     }
 
