@@ -17,8 +17,7 @@ export const getBooks = async () => {
         return response.data;
     } catch (error) {
         console.error("Error while fetching books", error);
-        console.log("Base url: " + BASE_URL);
-        return [];
+        throw new Error(response.statusText);
     }
 };
 
