@@ -2,7 +2,7 @@
 
 <div class="w-full min-h-screen bg-customBlue">
     <Spinner></Spinner>
-    <NavMenu ShowMenu="@_showMenu" ToggleMenu="@ToggleMenu"/>
+    <NavMenu ShowMenu="@ShowMenu" ToggleMenu="@ToggleMenu"/>
     <div class="pt-5 md:mt-20 flex flex-col min-h-screen">
         <main class="flex-grow">
             <article class="content px-5">
@@ -14,11 +14,11 @@
 </div>
 
 @code {
-    private bool _showMenu;
+    public bool ShowMenu;
 
     private void ToggleMenu()
     {
-        _showMenu = !_showMenu;
+        ShowMenu = !ShowMenu;
     }
 
 }
