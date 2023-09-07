@@ -14,41 +14,39 @@
 
 @if (_book != null)
 {
-    <CascadingValue Value="deleteBook" Name="DeleteBook">
-        <div class="md:w-1/2 mt-5">
-            <form @onsubmit="@OnSubmit">
-                <label for="id" class="mb-2 text-lg">id.</label>
+    <div class="md:w-1/2 mt-5">
+        <form @onsubmit="@OnSubmit">
+            <label for="id" class="mb-2 text-lg">id.</label>
+            <div class="relative">
+                <input @bind="@_book.Id" type="number" id="id" class="mb-2 block p-4 pl-10 text-md border rounded-lg bg-customWhite text-gray-500" readonly/>
+            </div>
+            <label for="title" class="mb-2 text-lg">title.</label>
+            <div class="relative">
+                <input @bind="@_book.Title" type="text" id="title" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
+            </div>
+            <label for="author" class="mb-2 text-lg">author.</label>
+            <div class="relative">
+                <input @bind="@_book.Author" type="text" id="author" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
+            </div>
+            <label for="description" class="mb-2 text-lg">description.</label>
+            <div class="relative">
+                <textarea @bind="@_book.Description" type="" id="description" rows="5" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required></textarea>
+            </div>
+            <div class="flex flex-row items-center mb-5">
+                <label for="isavailable" class="text-lg">is available.</label>
                 <div class="relative">
-                    <input @bind="@_book.Id" type="number" id="id" class="mb-2 block p-4 pl-10 text-md border rounded-lg bg-customWhite text-gray-500" readonly/>
+                    <input @bind="@_book.IsAvailable" type="checkbox" id="isavailable" class="ml-2 block text-xl bg-customWhite text-customBlue"/>
                 </div>
-                <label for="title" class="mb-2 text-lg">title.</label>
-                <div class="relative">
-                    <input @bind="@_book.Title" type="text" id="title" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
-                </div>
-                <label for="author" class="mb-2 text-lg">author.</label>
-                <div class="relative">
-                    <input @bind="@_book.Author" type="text" id="author" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
-                </div>
-                <label for="description" class="mb-2 text-lg">description.</label>
-                <div class="relative">
-                    <textarea @bind="@_book.Description" type="" id="description" rows="5" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required></textarea>
-                </div>
-                <div class="flex flex-row items-center mb-5">
-                    <label for="isavailable" class="text-lg">is available.</label>
-                    <div class="relative">
-                        <input @bind="@_book.IsAvailable" type="checkbox" id="isavailable" class="ml-2 block text-xl bg-customWhite text-customBlue"/>
-                    </div>
-                </div>
-                <button type="submit" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2">
-                    Save
-                </button>
-            </form>
-
-            <button @onclick="ShowDeleteConfirmation" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2 mt-5">
-                Delete book
+            </div>
+            <button type="submit" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2">
+                Save
             </button>
-        </div>
-    </CascadingValue>
+        </form>
+
+        <button @onclick="ShowDeleteConfirmation" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2 mt-5">
+            Delete book
+        </button>
+    </div>
 }
 else
 {
@@ -144,3 +142,4 @@ else
     }
 
 }
+

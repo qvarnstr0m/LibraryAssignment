@@ -21,3 +21,33 @@ export const getBooks = async () => {
     }
 };
 
+export const getBookById = async (id) => {
+    try {
+        const response = await apiClient.get(`books/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error while fetching book", error);
+        throw new Error(response.statusText);
+    }
+}
+
+export const updateBook = async (book) => {
+    try {
+        const response = await apiClient.put(`books/${book.id}`, book);
+        return response.data;
+    } catch (error) {
+        console.error("Error while updating book", error);
+        throw new Error(response.statusText);
+    }
+}
+
+export const deleteBook = async (book) => {
+    try {
+        const response = await apiClient.delete(`books/${book.id}`, book);
+        return response.data;
+    } catch (error) {
+        console.error("Error while deleting book", error);
+        throw new Error(response.statusText);
+    }
+}
+

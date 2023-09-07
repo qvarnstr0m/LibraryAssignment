@@ -40,7 +40,7 @@ const ListAllBooks = () => {
                     </thead>
                     <tbody>
                     {books.map(book => <tr key={book.id} className={book.id % 2 === 0 ? "bg-gray-100" : ""}>
-                        <td className="border px-4 py-2 hover:underline"><Link className="mx-2" to={`/book-details/${book.id}`}>Book Details</Link></td>
+                        <td className="border px-4 py-2 hover:underline"><Link className="mx-2" to={`/book-details/${book.id}`}>{book.title}</Link></td>
                         <td className="border px-4 py-2">{book.author}</td>
                         <td className="border px-4 py-2">{book.isAvailable ? "Yes" : "No"}</td>
                     </tr>)}
