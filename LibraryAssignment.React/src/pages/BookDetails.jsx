@@ -39,6 +39,15 @@ const BookDetails = () => {
         }
     }
 
+    const handleUpdateSubmit = async () => {
+        try {
+            await updateBook(bookId, book)
+            navigate("/result/Book updated");
+        } catch (error) {
+            navigate("/result/There was an error updating the book");
+        }
+    }
+
     return (
         <div className="p-4 w-full md:w-1/2">
             <h1 className="text-4xl pb-4">Book details</h1>
@@ -77,7 +86,8 @@ const BookDetails = () => {
                         </div>
                     </form>
                     <div className="mb-4 flex">
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save
+                        <button onClick={handleUpdateSubmit}
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save
                             changes
                         </button>
                         <button onClick={handleDeleteSubmit}

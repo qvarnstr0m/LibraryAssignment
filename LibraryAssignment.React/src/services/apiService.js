@@ -31,9 +31,10 @@ export const getBookById = async (id) => {
     }
 }
 
-export const updateBook = async (bookId) => {
+export const updateBook = async (bookId, book) => {
     try {
-        const response = await apiClient.put(`books/${bookId}}`);
+        console.log(book)
+        const response = await apiClient.put(`books/${bookId}`, book);
         return response.data;
     } catch (error) {
         console.error("Error while updating book", error);
