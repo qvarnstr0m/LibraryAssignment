@@ -31,9 +31,9 @@ export const getBookById = async (id) => {
     }
 }
 
-export const updateBook = async (book) => {
+export const updateBook = async (bookId) => {
     try {
-        const response = await apiClient.put(`books/${book.id}`, book);
+        const response = await apiClient.put(`books/${bookId}}`);
         return response.data;
     } catch (error) {
         console.error("Error while updating book", error);
@@ -41,9 +41,9 @@ export const updateBook = async (book) => {
     }
 }
 
-export const deleteBook = async (book) => {
+export const deleteBook = async (bookId) => {
     try {
-        const response = await apiClient.delete(`books/${book.id}`, book);
+        const response = await apiClient.delete(`books/${bookId}`);
         return response.data;
     } catch (error) {
         console.error("Error while deleting book", error);
