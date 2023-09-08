@@ -1,6 +1,6 @@
 using System.Text;
 using LibraryAssignment.BlazorWASM.Interfaces;
-using LibraryAssignment.Data.DTOs;
+using LibraryAssignment.BlazorWASM.DTOs;
 using LibraryAssignment.Data.Models;
 using Newtonsoft.Json;
 

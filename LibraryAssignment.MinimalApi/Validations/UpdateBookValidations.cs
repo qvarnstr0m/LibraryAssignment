@@ -1,5 +1,5 @@
 using FluentValidation;
-using LibraryAssignment.Data.DTOs;
+using LibraryAssignment.MinimalApi.DTOs;
 
 namespace LibraryAssignment.MinimalApi.Validations;
 

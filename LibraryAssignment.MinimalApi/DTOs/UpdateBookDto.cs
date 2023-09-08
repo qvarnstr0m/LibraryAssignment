@@ -1,4 +1,4 @@
-namespace LibraryAssignment.Data.DTOs;
+namespace LibraryAssignment.MinimalApi.DTOs;
 
 public class UpdateBookDto
 {

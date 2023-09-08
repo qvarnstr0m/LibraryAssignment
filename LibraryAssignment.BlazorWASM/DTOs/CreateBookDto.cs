@@ -1,4 +1,4 @@
-namespace LibraryAssignment.Data.DTOs;
+namespace LibraryAssignment.BlazorWASM.DTOs;
 
 public class CreateBookDto
 {

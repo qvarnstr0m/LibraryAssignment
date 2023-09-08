@@ -1,5 +1,5 @@
 using AutoMapper;
-using LibraryAssignment.Data.DTOs;
+using LibraryAssignment.BlazorWASM.DTOs;
 using LibraryAssignment.Data.Models;
 
 namespace LibraryAssignment.BlazorWASM.Mapping;

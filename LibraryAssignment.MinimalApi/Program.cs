@@ -1,7 +1,7 @@
 using AutoMapper;
 using FluentValidation;
 using LibraryAssignment.Data.DbContext;
-using LibraryAssignment.Data.DTOs;
+using LibraryAssignment.MinimalApi.DTOs;
 using LibraryAssignment.Data.Models;
 using LibraryAssignment.MinimalApi.Interfaces;
 using LibraryAssignment.MinimalApi.Repositories;
