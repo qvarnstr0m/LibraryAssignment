@@ -21,6 +21,10 @@
         <div class="relative">
             <input @bind="@_book.Author" type="text" id="author" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
         </div>
+        <label for="isbn" class="mb-2 text-lg">isbn.</label>
+        <div class="relative">
+            <input @bind="@_book.Isbn" type="text" id="isbn" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
+        </div>
         <label for="description" class="mb-2 text-lg">description.</label>
         <div class="relative">
             <textarea @bind="@_book.Description" type="" id="description" rows="5" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required></textarea>
@@ -40,23 +44,17 @@
 
 @if (_showInfoModal)
 {
-    <InfoModal Message="@_message"/>
+    <InfoModal Message="@_message" CloseInfoModal="ToggleInfoModal"/>
 }
 
 @code {
-
-    [CascadingParameter(Name = "ShowInfoModalState")]
-    private bool _showInfoModal { get; set; }
-
-    [CascadingParameter(Name = "ToggleInfoModalAction")]
-    private Action ToggleInfoModal { get; set; }
-
+    public bool _showInfoModal { get; set; }
     private string _message = "Loading...";
     private Book? _book = new();
 
     private async Task OnSubmit()
     {
-        if (_book.Description.Length <= 0 || _book.Title.Length <= 0 || _book.Author.Length <= 0)
+        if (_book.Description.Length <= 0 || _book.Title.Length <= 0 || _book.Author.Length <= 0 || _book.Isbn.Length <= 0)
         {
             return;
         }
@@ -77,9 +75,13 @@
         }
 
         SpinnerService.Hide();
+        _showInfoModal = true;
+    }
 
-        _showInfoModal = true; //This is a weird workaround to make bool to work with cascading parameters.
-        ToggleInfoModal(); //This is a weird workaround to make bool to work with cascading parameters.
+    private Task ToggleInfoModal()
+    {
+        _showInfoModal = false;
+        return Task.CompletedTask;
     }
 
 }

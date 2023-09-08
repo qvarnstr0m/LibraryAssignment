@@ -74,6 +74,12 @@ const BookDetails = () => {
                                    onChange={handleInputChange}/>
                         </div>
                         <div className="mb-4">
+                            <label htmlFor="isbn" className="mb-2 text-lg">Isbn</label>
+                            <input type="text" id="isbn" name="isbn"
+                                   className="block w-full p-4 text-md border rounded-lg" value={book.isbn}
+                                   onChange={handleInputChange}/>
+                        </div>
+                        <div className="mb-4">
                             <label className="mb-2 text-lg mr-3">Is available</label>
                             <input type="checkbox" name="isAvailable" checked={book.isAvailable}
                                    onChange={(e) => setBook({...book, isAvailable: e.target.checked})}/>

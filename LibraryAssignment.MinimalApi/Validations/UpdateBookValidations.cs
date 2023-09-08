@@ -23,5 +23,10 @@ public class UpdateBookValidations : AbstractValidator<UpdateBookDto>
             .WithMessage("Book author is required")
             .MaximumLength(100)
             .WithMessage("Book author cannot be longer than 100 characters");
+        RuleFor(book => book.Isbn)
+            .NotEmpty()
+            .WithMessage("Book Isbn is required")
+            .MaximumLength(50)
+            .WithMessage("Book Isbn cannot be longer than 50 characters");
     }
 }

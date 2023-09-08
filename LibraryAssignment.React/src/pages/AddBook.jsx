@@ -4,7 +4,7 @@ import {addBook} from "../services/apiService.js";
 import {validateBook} from "../utils/validations.js";
 
 const AddBook = () => {
-    const [book, setBook] = useState({});
+    const [book, setBook] = useState({ isAvailable: false });
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
 
@@ -43,6 +43,12 @@ const AddBook = () => {
                     <div className="mb-4">
                         <label htmlFor="author" className="mb-2 text-lg">Author</label>
                         <input type="text" id="author" name="author"
+                               className="block w-full p-4 text-md border rounded-lg"
+                               onChange={handleInputChange}/>
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="isbn" className="mb-2 text-lg">Isbn</label>
+                        <input type="text" id="isbn" name="isbn"
                                className="block w-full p-4 text-md border rounded-lg"
                                onChange={handleInputChange}/>
                     </div>

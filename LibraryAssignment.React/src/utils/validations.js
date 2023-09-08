@@ -9,6 +9,9 @@ export const validateBook = (book) => {
     if (!book.description) {
         errors.description = 'Description is required';
     }
+    if (!book.isbn) {
+        errors.isbn = 'Isbn is required';
+    }
     if (!book) {
         errors.book = 'Book is required';
     }
