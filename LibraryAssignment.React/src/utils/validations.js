@@ -1,5 +1,4 @@
 export const validateBook = (book) => {
-    console.log(book)
     const errors = {};
     if (!book.title) {
         errors.title = 'Title is required';
@@ -10,7 +9,7 @@ export const validateBook = (book) => {
     if (!book.description) {
         errors.description = 'Description is required';
     }
-    if (book == null) {
+    if (!book) {
         errors.book = 'Book is required';
     }
     return errors;

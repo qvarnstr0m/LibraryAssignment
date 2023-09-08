@@ -16,8 +16,6 @@ const AddBook = () => {
     const handleAddSubmit = async () => {
         try {
             let validationErrors = validateBook(book)
-            console.log(book)
-            console.log(validationErrors.length)
 
             if (Object.keys(validationErrors).length > 0) {
                 setErrors(Object.values(validationErrors).join(", "));
