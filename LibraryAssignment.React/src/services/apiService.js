@@ -52,3 +52,13 @@ export const deleteBook = async (bookId) => {
     }
 }
 
+export const addBook = async (book) => {
+    try {
+        const response = await apiClient.post('books', book);
+        return response.data;
+    } catch (error) {
+        console.error("Error while adding book", error);
+        throw new Error(response.statusText);
+    }
+}
+
