@@ -1,6 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
-
-<div class="flex flex-row font-standard text-customYellow justify-between py-5 px-5 items-center">
+<div class="flex flex-row font-standard text-customYellow justify-between py-5 px-5 items-center sticky top-0 bg-customBlue z-50">
     <div>
         <h1 class="mr-3 text-2xl md:text-3xl hover:underline">
             <NavLink href="">library.</NavLink>
@@ -10,7 +9,7 @@
         <Searchbar/>
     </div>
     <div>
-        <ul class="flex flex-col md:flex-row text-2xl md:text-3xl ">
+        <ul class="flex flex-col md:flex-row text-2xl md:text-3xl">
             <li class="mr-3">
                 <button @onclick="ToggleMenu" class="hover:underline">menu.</button>
             </li>
@@ -25,7 +24,6 @@
 @if (ShowMenu)
 {
     <MenuModal ShowMenu="@ShowMenu" ToggleMenu="@ToggleMenu"/>
-
 }
 
 @code {
