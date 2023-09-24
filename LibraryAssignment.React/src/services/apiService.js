@@ -13,7 +13,9 @@ const apiClient = axios.create({
 
 export const getBooks = async () => {
     try {
+        console.log("base url: " + BASE_URL)
         const response = await apiClient.get('books');
+        console.log("response: " + response)
         return response.data;
     } catch (error) {
         console.error("Error while fetching books", error);

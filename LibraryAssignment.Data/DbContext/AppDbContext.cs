@@ -14,7 +14,7 @@ public class AppDbContext : Microsoft.EntityFrameworkCore.DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Book>()
-            .HasIndex(mws => new { mws.Isbn })
+            .HasIndex(mws => new { mws.BookCoverFileName })
             .IsUnique();
     }
 }

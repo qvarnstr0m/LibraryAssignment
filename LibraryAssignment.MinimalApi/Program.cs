@@ -5,6 +5,7 @@ using LibraryAssignment.MinimalApi.DTOs;
 using LibraryAssignment.Data.Models;
 using LibraryAssignment.MinimalApi.Interfaces;
 using LibraryAssignment.MinimalApi.Repositories;
+using LibraryAssignment.MinimalApi.Services;
 using LibraryAssignment.MinimalApi.Validations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ builder.Services.AddTransient<IValidator<CreateBookDto>, CreateBookValidations>(
 builder.Services.AddTransient<IValidator<UpdateBookDto>, UpdateBookValidations>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ILogger, Logger<Program>>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -38,7 +40,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder =>
     {
-        builder.WithOrigins("https://localhost:7067", "http://localhost:5173")
+        builder.WithOrigins("https://localhost:7067", "http://localhost:5173", "http://127.0.0.1:5173")
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -93,8 +95,8 @@ app.MapGet("/api/books/{id:int}", async (int id, IRepository<Book> repository, I
     .Produces(500)
     .Produces(404);
 
-app.MapPost("api/books", async ([FromBody] CreateBookDto bookDto, IRepository<Book> repository,
-        ILogger logger, IValidator<CreateBookDto> validator, IMapper mapper) =>
+app.MapPost("api/books", async ([FromBody] CreateBookDto bookDto, IRepository<Book> repository, 
+        ILogger logger, IValidator<CreateBookDto> validator, IMapper mapper, IBookService bookService) =>
     {
         try
         {
@@ -103,6 +105,17 @@ app.MapPost("api/books", async ([FromBody] CreateBookDto bookDto, IRepository<Bo
             if (!validationResult.IsValid)
             {
                 return Results.BadRequest(validationResult.Errors);
+            }
+            
+            if (bookDto.BookCoverImage != null)
+            {
+                var storeBookCoverImageResult = await bookService.StoreBookCoverImageAsync(bookDto.BookCoverFileName,
+                    bookDto.BookCoverImage);
+
+                if (storeBookCoverImageResult is BadRequestResult)
+                {
+                    return Results.BadRequest("Book cover image is not valid");
+                }
             }
 
             var createdBook = await repository.Create(mapper.Map<Book>(bookDto));

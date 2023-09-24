@@ -29,6 +29,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\LibraryAssignment.Data\LibraryAssignment.Data.csproj" />
+
     </ItemGroup>
 
 
