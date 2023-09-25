@@ -55,6 +55,7 @@ const BookDetails = () => {
             {error && <p className="text-red-500">{error}</p>}
             {!loading && !error && book &&
                 <div>
+                    <img src={`http://127.0.0.1:5173/images/book-covers/${book.bookCoverFileName}`} alt={book.title} className="my-5"/>
                     <form className="w-full">
                         <div className="mb-4">
                             <label htmlFor="bookId" className="mb-2 text-lg">Id</label>
