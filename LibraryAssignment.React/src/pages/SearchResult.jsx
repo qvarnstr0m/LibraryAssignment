@@ -32,7 +32,8 @@ const SearchResult = () => {
             <p className="text-lg pb-4">Click on a title for details</p>
             {loading && <p className="text-red-500">Loading...</p>}
             {error && <p className="text-red-500">Error fetching books.</p>}
-            {!loading && !error &&
+            {!error && books.length === 0 && <p>No matches.</p>}
+            {!loading && !error && books.length > 0 &&
                 <table>
                     <thead>
                     <tr>
