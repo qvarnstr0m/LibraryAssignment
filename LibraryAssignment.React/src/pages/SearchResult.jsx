@@ -1,16 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import {getBooks} from "../services/apiService.js";
+import {searchBooks} from "../services/apiService.js";
 import {Link} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-const ListAllBooks = () => {
+const SearchResult = () => {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const location = useLocation();
+    const searchTerm = new URLSearchParams(location.search).get("term");
 
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const books = await getBooks()
+                const books = await searchBooks(searchTerm)
                 setBooks(books)
                 setLoading(false)
             } catch (error) {
@@ -21,11 +24,11 @@ const ListAllBooks = () => {
         };
 
         fetchBooks();
-    }, []);
+    }, [searchTerm]);
 
     return (
         <div className="p-4">
-            <h1 className="text-4xl pb-4">List all books</h1>
+            <h1 className="text-4xl pb-4">Search results</h1>
             <p className="text-lg pb-4">Click on a title for details</p>
             {loading && <p className="text-red-500">Loading...</p>}
             {error && <p className="text-red-500">Error fetching books.</p>}
@@ -51,4 +54,4 @@ const ListAllBooks = () => {
     );
 };
 
-export default ListAllBooks;
+export default SearchResult;

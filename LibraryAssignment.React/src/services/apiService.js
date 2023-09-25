@@ -61,3 +61,13 @@ export const addBook = async (book) => {
     }
 }
 
+export const searchBooks = async (searchTerm) => {
+    try {
+        const response = await apiClient.get(`books/search?searchWord=${searchTerm}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error while searching books", error);
+        throw new Error(response.statusText);
+    }
+}
+
