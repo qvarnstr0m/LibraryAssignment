@@ -35,7 +35,6 @@ export const getBookById = async (id) => {
 
 export const updateBook = async (bookId, book) => {
     try {
-        console.log(book)
         const response = await apiClient.put(`books/${bookId}`, book);
         return response.data;
     } catch (error) {

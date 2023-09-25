@@ -4,7 +4,7 @@ import {addBook} from "../services/apiService.js";
 import {validateBook} from "../utils/validations.js";
 
 const AddBook = () => {
-    const [book, setBook] = useState({ isAvailable: false });
+    const [book, setBook] = useState({ isAvailable: true,  bookCoverFileName: "default-book-cover.jpeg"});
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
 
@@ -47,14 +47,16 @@ const AddBook = () => {
                                onChange={handleInputChange}/>
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="isbn" className="mb-2 text-lg">Isbn</label>
-                        <input type="text" id="isbn" name="isbn"
+                        <label htmlFor="bookCoverFileName" className="mb-2 text-lg">Book cover file name</label>
+                        <input type="text" id="bookCoverFileName" name="bookCoverFileName"
+                               value={book.bookCoverFileName}
                                className="block w-full p-4 text-md border rounded-lg"
                                onChange={handleInputChange}/>
                     </div>
                     <div className="mb-4">
                         <label className="mb-2 text-lg mr-3">Is available</label>
                         <input type="checkbox" name="isAvailable"
+                               checked={book.isAvailable}
                                onChange={(e) => setBook({...book, isAvailable: e.target.checked})}/>
                     </div>
                     <div className="mb-4">

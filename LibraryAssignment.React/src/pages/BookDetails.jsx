@@ -74,9 +74,9 @@ const BookDetails = () => {
                                    onChange={handleInputChange}/>
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="isbn" className="mb-2 text-lg">Isbn</label>
-                            <input type="text" id="isbn" name="isbn"
-                                   className="block w-full p-4 text-md border rounded-lg" value={book.isbn}
+                            <label htmlFor="bookCoverFileName" className="mb-2 text-lg">Book cover file name</label>
+                            <input type="text" id="bookCoverFileName" name="isbn"
+                                   className="block w-full p-4 text-md border rounded-lg" value={book.bookCoverFileName}
                                    onChange={handleInputChange}/>
                         </div>
                         <div className="mb-4">

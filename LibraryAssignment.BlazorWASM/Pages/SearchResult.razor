@@ -19,8 +19,7 @@
                 Author="@book.Author"
                 Description="@book.Description"
                 IsAvailable="@book.IsAvailable"
-                BookCoverFileName = "@book.BookCoverFileName"
-                />
+                BookCoverFileName="@book.BookCoverFileName"/>
         }
     </div>
 }
@@ -40,7 +39,7 @@ else
     protected override async Task OnParametersSetAsync()
     {
         BooksList = null;
-        
+
         SpinnerService.Show();
 
         var result = await BookService.SearchBooksAsync(SearchTerm);
@@ -64,3 +63,4 @@ else
     }
 
 }
+
