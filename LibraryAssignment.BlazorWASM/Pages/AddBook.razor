@@ -2,11 +2,9 @@
 @using LibraryAssignment.BlazorWASM.Interfaces
 @using AutoMapper
 @using LibraryAssignment.BlazorWASM.DTOs
-@using Tewr.Blazor.FileReader
 @inject IBookService BookService
 @inject SpinnerService SpinnerService
 @inject IMapper Mapper
-@inject IFileReaderService FileReaderService
 
 <PageTitle>add book - library.</PageTitle>
 
@@ -16,25 +14,25 @@
     <form @onsubmit="@OnSubmit">
         <label for="title" class="mb-2 text-lg">title.</label>
         <div class="relative">
-            <input @bind="@_book.Title" type="text" id="title" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
+            <input @bind="@_book.Title" type="text" id="title" class="mb-2 w-full block p-4 text-md border rounded-lg bg-customWhite text-customBlue" required/>
         </div>
         <label for="author" class="mb-2 text-lg">author.</label>
         <div class="relative">
-            <input @bind="@_book.Author" type="text" id="author" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required/>
+            <input @bind="@_book.Author" type="text" id="author" class="mb-2 w-full block p-4 text-md border rounded-lg bg-customWhite text-customBlue" required/>
         </div>
         <label for="description" class="mb-2 text-lg">description.</label>
         <div class="relative">
-            <textarea @bind="@_book.Description" type="" id="description" rows="5" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required></textarea>
+            <textarea @bind="@_book.Description" type="" id="description" rows="5" class="mb-2 w-full block p-4 text-md border rounded-lg bg-customWhite text-customBlue" required></textarea>
+        </div>
+        <label for="bookCoverFileName" class="mb-2 text-lg">book cover file name.</label>
+        <div class="relative">
+            <input @bind="@_book.BookCoverFileName" type="text" id="bookCoverFileName" class="mb-2 w-full block p-4 text-md border rounded-lg bg-customWhite text-customBlue" required/>
         </div>
         <div class="flex flex-row items-center mb-5">
             <label for="isavailable" class="text-lg">is available.</label>
             <div class="relative">
                 <input @bind="@_book.IsAvailable" type="checkbox" id="isavailable" class="ml-2 block text-xl bg-customWhite text-customBlue"/>
             </div>
-        </div>
-        <label for="bookCover" class="mb-2 text-lg">book cover.</label>
-        <div class="relative">
-            <input @ref="_bookCoverInput" type="file" id="bookCover" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" @onchange="HandleFileSelected"/>
         </div>
         <button type="submit" class="bg-customOrange text-customBlue hover:text-customYellow rounded-lg px-4 py-2">
             Save
@@ -51,9 +49,11 @@
 @code {
     public bool _showInfoModal { get; set; }
     private string _message = "Loading...";
-    private CreateBookDto? _book = new();
-    private ElementReference _bookCoverInput;
-
+    private CreateBookDto? _book = new ()
+    {
+        BookCoverFileName = "default-book-cover.jpeg",
+        IsAvailable = true
+    };
 
     private async Task OnSubmit()
     {
@@ -85,25 +85,6 @@
     {
         _showInfoModal = false;
         return Task.CompletedTask;
-    }
-    
-    private async Task HandleFileSelected(ChangeEventArgs e)
-    {
-        var files = e.Value as IEnumerable<IBrowserFile>;
-
-        if (files != null)
-        {
-            foreach (var file in files)
-            {
-                if (file != null)
-                {
-                    var buffer = new byte[file.Size];
-                    await file.OpenReadStream().ReadAsync(buffer);
-                    var bookCover = Convert.ToBase64String(buffer);
-                    _book.BookCoverImage = bookCover;
-                }
-            }
-        }
     }
 
 }

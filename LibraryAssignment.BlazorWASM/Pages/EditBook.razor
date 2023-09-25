@@ -32,6 +32,10 @@
             <div class="relative">
                 <textarea @bind="@_book.Description" type="" id="description" rows="5" class="mb-2 w-full block p-4 pl-10 text-md border rounded-lg bg-customWhite text-customBlue" required></textarea>
             </div>
+            <label for="bookCoverFileName" class="mb-2 text-lg">book cover file name.</label>
+            <div class="relative">
+                <input @bind="@_book.BookCoverFileName" type="text" id="bookCoverFileName" class="mb-2 w-full block p-4 text-md border rounded-lg bg-customWhite text-customBlue" required/>
+            </div>
             <div class="flex flex-row items-center mb-5">
                 <label for="isavailable" class="text-lg">is available.</label>
                 <div class="relative">
@@ -142,4 +146,3 @@ else
     }
 
 }
-

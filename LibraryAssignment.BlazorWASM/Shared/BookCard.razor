@@ -51,13 +51,16 @@
 
     [Parameter]
     public string Description { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string BookCoverFileName { get; set; } = string.Empty;
 
     [Parameter]
     public bool IsAvailable { get; set; }
 
     private string GetBookCoverUrl()
     {
-        return $"images/book-covers/{Id}.jpeg";
+        return $"images/book-covers/{BookCoverFileName}";
     }
 
     private string ShortenString(string stringToShorten)

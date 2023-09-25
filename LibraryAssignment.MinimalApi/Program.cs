@@ -5,7 +5,6 @@ using LibraryAssignment.MinimalApi.DTOs;
 using LibraryAssignment.Data.Models;
 using LibraryAssignment.MinimalApi.Interfaces;
 using LibraryAssignment.MinimalApi.Repositories;
-using LibraryAssignment.MinimalApi.Services;
 using LibraryAssignment.MinimalApi.Validations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +29,6 @@ builder.Services.AddTransient<IValidator<CreateBookDto>, CreateBookValidations>(
 builder.Services.AddTransient<IValidator<UpdateBookDto>, UpdateBookValidations>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ILogger, Logger<Program>>();
-builder.Services.AddScoped<IBookService, BookService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -96,7 +94,7 @@ app.MapGet("/api/books/{id:int}", async (int id, IRepository<Book> repository, I
     .Produces(404);
 
 app.MapPost("api/books", async ([FromBody] CreateBookDto bookDto, IRepository<Book> repository, 
-        ILogger logger, IValidator<CreateBookDto> validator, IMapper mapper, IBookService bookService) =>
+        ILogger logger, IValidator<CreateBookDto> validator, IMapper mapper) =>
     {
         try
         {
@@ -105,17 +103,6 @@ app.MapPost("api/books", async ([FromBody] CreateBookDto bookDto, IRepository<Bo
             if (!validationResult.IsValid)
             {
                 return Results.BadRequest(validationResult.Errors);
-            }
-            
-            if (bookDto.BookCoverImage != null)
-            {
-                var storeBookCoverImageResult = await bookService.StoreBookCoverImageAsync(bookDto.BookCoverFileName,
-                    bookDto.BookCoverImage);
-
-                if (storeBookCoverImageResult is BadRequestResult)
-                {
-                    return Results.BadRequest("Book cover image is not valid");
-                }
             }
 
             var createdBook = await repository.Create(mapper.Map<Book>(bookDto));
