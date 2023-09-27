@@ -1,4 +1,3 @@
-using AutoMapper;
 using FluentValidation;
 using LibraryAssignment.Data.DbContext;
 using LibraryAssignment.MinimalApi.DTOs;
@@ -7,7 +6,6 @@ using LibraryAssignment.MinimalApi.Endpoints;
 using LibraryAssignment.MinimalApi.Interfaces;
 using LibraryAssignment.MinimalApi.Repositories;
 using LibraryAssignment.MinimalApi.Validations;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
